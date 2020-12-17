@@ -1,0 +1,653 @@
+
+/*==============================================================*/
+/* Table: CIUDAD                                                */
+/*==============================================================*/
+create table CIUDAD (
+   ID_CIUDAD            INT4                 not null,
+   ID_PROVINCIA         INT4                 not null,
+   NOMBRE_CIUDAD        CHAR(50)             null,
+   constraint PK_CIUDAD primary key (ID_CIUDAD)
+);
+
+/*==============================================================*/
+/* Index: CIUDAD_PK                                             */
+/*==============================================================*/
+create unique index CIUDAD_PK on CIUDAD (
+ID_CIUDAD
+);
+
+/*==============================================================*/
+/* Index: TIENE_FK                                              */
+/*==============================================================*/
+create  index TIENE_FK on CIUDAD (
+ID_PROVINCIA
+);
+
+/*==============================================================*/
+/* Table: CLIENTE                                               */
+/*==============================================================*/
+create table CLIENTE (
+   ID_CLIENTE           INT4                 not null,
+   ID_PERSONA           INT4                 not null,
+   constraint PK_CLIENTE primary key (ID_CLIENTE)
+);
+
+/*==============================================================*/
+/* Index: CLIENTE_PK                                            */
+/*==============================================================*/
+create unique index CLIENTE_PK on CLIENTE (
+ID_CLIENTE
+);
+
+/*==============================================================*/
+/* Index: ES_FK                                                 */
+/*==============================================================*/
+create  index ES_FK on CLIENTE (
+ID_PERSONA
+);
+
+/*==============================================================*/
+/* Table: DETALLE_FACTURA                                       */
+/*==============================================================*/
+create table DETALLE_FACTURA (
+   ID_DETFAC            INT4                 not null,
+   ID_PRODUCTO          INT4                 not null,
+   ID_FACTURA           INT4                 not null,
+   CANTIDAD_DETFAC      NUMERIC              null,
+   SUBTOTAL_DETFAC      FLOAT8               null,
+   IVA_DETFAC           FLOAT8               null,
+   TOTAL_DETFAC         FLOAT8               null,
+   constraint PK_DETALLE_FACTURA primary key (ID_DETFAC)
+);
+
+/*==============================================================*/
+/* Index: DETALLE_FACTURA_PK                                    */
+/*==============================================================*/
+create unique index DETALLE_FACTURA_PK on DETALLE_FACTURA (
+ID_DETFAC
+);
+
+/*==============================================================*/
+/* Index: PERTENECE_FK                                          */
+/*==============================================================*/
+create  index PERTENECE_FK on DETALLE_FACTURA (
+ID_PRODUCTO
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_13_FK                                    */
+/*==============================================================*/
+create  index RELATIONSHIP_13_FK on DETALLE_FACTURA (
+ID_FACTURA
+);
+
+/*==============================================================*/
+/* Table: EMPLEADO                                              */
+/*==============================================================*/
+create table EMPLEADO (
+   ID_EMPLEADO          INT4                 not null,
+   ID_TIPO_EMPLEADO     INT4                 not null,
+   ID_PERSONA           INT4                 not null,
+   FECHAINICIO_EMPLEADO DATE                 null,
+   constraint PK_EMPLEADO primary key (ID_EMPLEADO)
+);
+
+/*==============================================================*/
+/* Index: EMPLEADO_PK                                           */
+/*==============================================================*/
+create unique index EMPLEADO_PK on EMPLEADO (
+ID_EMPLEADO
+);
+
+/*==============================================================*/
+/* Index: DISPONE_FK                                            */
+/*==============================================================*/
+create  index DISPONE_FK on EMPLEADO (
+ID_TIPO_EMPLEADO
+);
+
+/*==============================================================*/
+/* Index: ES_1_FK                                               */
+/*==============================================================*/
+create  index ES_1_FK on EMPLEADO (
+ID_PERSONA
+);
+
+/*==============================================================*/
+/* Table: FACTURA                                               */
+/*==============================================================*/
+create table FACTURA (
+   ID_FACTURA           INT4                 not null,
+   ID_CLIENTE           INT4                 not null,
+   ID_EMPLEADO          INT4                 not null,
+   ID_SUCURSAL          INT4                 not null,
+   FECHA_FACTURA        DATE                 null,
+   constraint PK_FACTURA primary key (ID_FACTURA)
+);
+
+/*==============================================================*/
+/* Index: FACTURA_PK                                            */
+/*==============================================================*/
+create unique index FACTURA_PK on FACTURA (
+ID_FACTURA
+);
+
+/*==============================================================*/
+/* Index: PERTENECE_1_FK                                        */
+/*==============================================================*/
+create  index PERTENECE_1_FK on FACTURA (
+ID_SUCURSAL
+);
+
+/*==============================================================*/
+/* Index: TIENE_7_FK                                            */
+/*==============================================================*/
+create  index TIENE_7_FK on FACTURA (
+ID_CLIENTE
+);
+
+/*==============================================================*/
+/* Index: GENERA_FK                                             */
+/*==============================================================*/
+create  index GENERA_FK on FACTURA (
+ID_EMPLEADO
+);
+
+/*==============================================================*/
+/* Table: PERSONA                                               */
+/*==============================================================*/
+create table PERSONA (
+   ID_PERSONA           INT4                 not null,
+   NOMBRES_PERSONA      CHAR(50)             null,
+   APELLIDOS_PERSONA    CHAR(50)             null,
+   FECHA_NACIMIENTO_PERSONA DATE                 null,
+   CEDULA_PERSONA       NUMERIC              null,
+   DIRECCION_PERSONA    VARCHAR(50)          null,
+   ESTADOCIVIL_PERSONA  CHAR(10)             null,
+   SEXO_PERSONA         CHAR(10)             null,
+   constraint PK_PERSONA primary key (ID_PERSONA)
+);
+
+/*==============================================================*/
+/* Index: PERSONA_PK                                            */
+/*==============================================================*/
+create unique index PERSONA_PK on PERSONA (
+ID_PERSONA
+);
+
+/*==============================================================*/
+/* Table: PRODUCTO                                              */
+/*==============================================================*/
+create table PRODUCTO (
+   ID_PRODUCTO          INT4                 not null,
+   ID_SUCURSAL          INT4                 not null,
+   ID_TIPO_PRODUCTO     INT4                 not null,
+   NOMBRE_PRODUCTO      CHAR(50)             null,
+   FECHA_ELAB_PRODUCTO  DATE                 null,
+   FECHA_CAD_PRODUCTO   DATE                 null,
+   PRECIIO_PRODUCTO     FLOAT8               null,
+   STOCK_PRODUCTO       NUMERIC              null,
+   DESCRIPCION_PRODUCTO CHAR(50)             null,
+   constraint PK_PRODUCTO primary key (ID_PRODUCTO)
+);
+
+/*==============================================================*/
+/* Index: PRODUCTO_PK                                           */
+/*==============================================================*/
+create unique index PRODUCTO_PK on PRODUCTO (
+ID_PRODUCTO
+);
+
+/*==============================================================*/
+/* Index: CUENTA_FK                                             */
+/*==============================================================*/
+create  index CUENTA_FK on PRODUCTO (
+ID_SUCURSAL
+);
+
+/*==============================================================*/
+/* Index: DISPONE_2_FK                                          */
+/*==============================================================*/
+create  index DISPONE_2_FK on PRODUCTO (
+ID_TIPO_PRODUCTO
+);
+
+/*==============================================================*/
+/* Table: PRODUCTO_PROVEEDOR                                    */
+/*==============================================================*/
+create table PRODUCTO_PROVEEDOR (
+   ID_PRO_PROV          INT4                 not null,
+   ID_PRODUCTO          INT4                 not null,
+   ID_PROVEEDOR         INT4                 not null,
+   constraint PK_PRODUCTO_PROVEEDOR primary key (ID_PRO_PROV)
+);
+
+/*==============================================================*/
+/* Index: PRODUCTO_PROVEEDOR_PK                                 */
+/*==============================================================*/
+create unique index PRODUCTO_PROVEEDOR_PK on PRODUCTO_PROVEEDOR (
+ID_PRO_PROV
+);
+
+/*==============================================================*/
+/* Index: TIENE_6_FK                                            */
+/*==============================================================*/
+create  index TIENE_6_FK on PRODUCTO_PROVEEDOR (
+ID_PROVEEDOR
+);
+
+/*==============================================================*/
+/* Index: TIENE_5_FK                                            */
+/*==============================================================*/
+create  index TIENE_5_FK on PRODUCTO_PROVEEDOR (
+ID_PRODUCTO
+);
+
+/*==============================================================*/
+/* Table: PROVEEDOR                                             */
+/*==============================================================*/
+create table PROVEEDOR (
+   ID_PROVEEDOR         INT4                 not null,
+   NOMBRE_PROVEEDOR     CHAR(50)             null,
+   constraint PK_PROVEEDOR primary key (ID_PROVEEDOR)
+);
+
+/*==============================================================*/
+/* Index: PROVEEDOR_PK                                          */
+/*==============================================================*/
+create unique index PROVEEDOR_PK on PROVEEDOR (
+ID_PROVEEDOR
+);
+
+/*==============================================================*/
+/* Table: PROVINCIA                                             */
+/*==============================================================*/
+create table PROVINCIA (
+   ID_PROVINCIA         INT4                 not null,
+   NOMBRE_PROVINCIA     CHAR(50)             null,
+   constraint PK_PROVINCIA primary key (ID_PROVINCIA)
+);
+
+/*==============================================================*/
+/* Index: PROVINCIA_PK                                          */
+/*==============================================================*/
+create unique index PROVINCIA_PK on PROVINCIA (
+ID_PROVINCIA
+);
+
+/*==============================================================*/
+/* Table: SUCURSAL                                              */
+/*==============================================================*/
+create table SUCURSAL (
+   ID_SUCURSAL          INT4                 not null,
+   ID_CIUDAD            INT4                 not null,
+   NOMBRE_SUCURSAL      CHAR(60)             null,
+   constraint PK_SUCURSAL primary key (ID_SUCURSAL)
+);
+
+/*==============================================================*/
+/* Index: SUCURSAL_PK                                           */
+/*==============================================================*/
+create unique index SUCURSAL_PK on SUCURSAL (
+ID_SUCURSAL
+);
+
+/*==============================================================*/
+/* Index: TIENE_2_FK                                            */
+/*==============================================================*/
+create  index TIENE_2_FK on SUCURSAL (
+ID_CIUDAD
+);
+
+/*==============================================================*/
+/* Table: TIPO_EMPLEADO                                         */
+/*==============================================================*/
+create table TIPO_EMPLEADO (
+   ID_TIPO_EMPLEADO     INT4                 not null,
+   NOMBRE_TIPO_EMPLEADO CHAR(50)             null,
+   DESCRIPCION_TIPO_EMPLEADO CHAR(125)            null,
+   SALARIO_TIPO_EMPLEADO NUMERIC              null,
+   constraint PK_TIPO_EMPLEADO primary key (ID_TIPO_EMPLEADO)
+);
+
+/*==============================================================*/
+/* Index: TIPO_EMPLEADO_PK                                      */
+/*==============================================================*/
+create unique index TIPO_EMPLEADO_PK on TIPO_EMPLEADO (
+ID_TIPO_EMPLEADO
+);
+
+/*==============================================================*/
+/* Table: TIPO_PRODUCTO                                         */
+/*==============================================================*/
+create table TIPO_PRODUCTO (
+   ID_TIPO_PRODUCTO     INT4                 not null,
+   NOMBRE_TIPO_PRODUCTO CHAR(50)             null,
+   constraint PK_TIPO_PRODUCTO primary key (ID_TIPO_PRODUCTO)
+);
+
+/*==============================================================*/
+/* Index: TIPO_PRODUCTO_PK                                      */
+/*==============================================================*/
+create unique index TIPO_PRODUCTO_PK on TIPO_PRODUCTO (
+ID_TIPO_PRODUCTO
+);
+
+alter table CIUDAD
+   add constraint FK_CIUDAD_TIENE_PROVINCI foreign key (ID_PROVINCIA)
+      references PROVINCIA (ID_PROVINCIA)
+      on delete restrict on update restrict;
+
+alter table CLIENTE
+   add constraint FK_CLIENTE_ES_PERSONA foreign key (ID_PERSONA)
+      references PERSONA (ID_PERSONA)
+      on delete restrict on update restrict;
+
+alter table DETALLE_FACTURA
+   add constraint FK_DETALLE__PERTENECE_PRODUCTO foreign key (ID_PRODUCTO)
+      references PRODUCTO (ID_PRODUCTO)
+      on delete restrict on update restrict;
+
+alter table DETALLE_FACTURA
+   add constraint FK_DETALLE__RELATIONS_FACTURA foreign key (ID_FACTURA)
+      references FACTURA (ID_FACTURA)
+      on delete restrict on update restrict;
+
+alter table EMPLEADO
+   add constraint FK_EMPLEADO_DISPONE_TIPO_EMP foreign key (ID_TIPO_EMPLEADO)
+      references TIPO_EMPLEADO (ID_TIPO_EMPLEADO)
+      on delete restrict on update restrict;
+
+alter table EMPLEADO
+   add constraint FK_EMPLEADO_ES_1_PERSONA foreign key (ID_PERSONA)
+      references PERSONA (ID_PERSONA)
+      on delete restrict on update restrict;
+
+alter table FACTURA
+   add constraint FK_FACTURA_GENERA_EMPLEADO foreign key (ID_EMPLEADO)
+      references EMPLEADO (ID_EMPLEADO)
+      on delete restrict on update restrict;
+
+alter table FACTURA
+   add constraint FK_FACTURA_PERTENECE_SUCURSAL foreign key (ID_SUCURSAL)
+      references SUCURSAL (ID_SUCURSAL)
+      on delete restrict on update restrict;
+
+alter table FACTURA
+   add constraint FK_FACTURA_TIENE_7_CLIENTE foreign key (ID_CLIENTE)
+      references CLIENTE (ID_CLIENTE)
+      on delete restrict on update restrict;
+
+alter table PRODUCTO
+   add constraint FK_PRODUCTO_CUENTA_SUCURSAL foreign key (ID_SUCURSAL)
+      references SUCURSAL (ID_SUCURSAL)
+      on delete restrict on update restrict;
+
+alter table PRODUCTO
+   add constraint FK_PRODUCTO_DISPONE_2_TIPO_PRO foreign key (ID_TIPO_PRODUCTO)
+      references TIPO_PRODUCTO (ID_TIPO_PRODUCTO)
+      on delete restrict on update restrict;
+
+alter table PRODUCTO_PROVEEDOR
+   add constraint FK_PRODUCTO_TIENE_5_PRODUCTO foreign key (ID_PRODUCTO)
+      references PRODUCTO (ID_PRODUCTO)
+      on delete restrict on update restrict;
+
+alter table PRODUCTO_PROVEEDOR
+   add constraint FK_PRODUCTO_TIENE_6_PROVEEDO foreign key (ID_PROVEEDOR)
+      references PROVEEDOR (ID_PROVEEDOR)
+      on delete restrict on update restrict;
+
+alter table SUCURSAL
+   add constraint FK_SUCURSAL_TIENE_2_CIUDAD foreign key (ID_CIUDAD)
+      references CIUDAD (ID_CIUDAD)
+      on delete restrict on update restrict;
+
+
+---------------------------Insercion de Datos--------------------------------
+
+/*
+INSERT INTO `ciudad` (`ID_CIUDAD`, `ID_PROVINCIA`, `NOMBRE_CIUDAD`) VALUES
+(1, 4, 'La Libertad'),
+(2, 2, 'Manta'),
+(3, 5, 'Guayakill'),
+(4, 2, 'Portoviejo'),
+(5, 8, 'Cuenca'),
+(6, 7, 'Machala'),
+(7, 16, 'Quito'),
+(8, 17, 'Ambato'),
+(9, 22, 'Lago Agrio'),
+(10, 23, 'Zamora');
+
+-- --------------------------------------------------------
+
+
+
+INSERT INTO `cliente` (`ID_CLIENTE`, `ID_PERSONA`) VALUES
+(1, 4),
+(2, 5),
+(3, 6);
+
+-- --------------------------------------------------------
+
+
+
+INSERT INTO `detalle_factura` (`ID_DETFAC`, `ID_PRODUCTO`, `ID_FACTURA`, `CANTIDAD_DETFAC`, `SUBTOTAL_DETFAC`, `IVA_DETFAC`, `TOTAL_DETFAC`) VALUES
+(1, 20, 1, '1', 1.3, 0.12, 1.45),
+(2, 9, 2, '1', 1.65, 0.12, 2),
+(3, 10, 3, '1', 3.25, 0.12, 3.64);
+
+-- --------------------------------------------------------
+
+
+
+INSERT INTO `empleado` (`ID_EMPLEADO`, `ID_TIPO_EMPLEADO`, `ID_PERSONA`, `FECHAINICIO_EMPLEADO`) VALUES
+(1, 1, 3, '2020-12-01'),
+(2, 2, 8, '2020-12-01'),
+(3, 3, 7, '2020-12-01'),
+(4, 2, 2, '2020-12-01'),
+(5, 3, 10, '2020-12-01'),
+(6, 2, 1, '2020-12-01'),
+(7, 3, 9, '2020-12-01');
+
+-- --------------------------------------------------------
+
+
+
+INSERT INTO `factura` (`ID_FACTURA`, `ID_CLIENTE`, `ID_EMPLEADO`, `ID_SUCURSAL`, `FECHA_FACTURA`) VALUES
+(1, 1, 7, 4, '2020-12-15'),
+(2, 2, 5, 2, '2020-12-14'),
+(3, 3, 3, 7, '2020-12-12');
+
+-- --------------------------------------------------------
+
+
+
+INSERT INTO `persona` (`ID_PERSONA`, `NOMBRES_PERSONA`, `APELLIDOS_PERSONA`, `FECHA_NACIMIENTO_PERSONA`, `CEDULA_PERSONA`, `DIRECCION_PERSONA`, `ESTADOCIVIL_PERSONA`, `SEXO_PERSONA`) VALUES
+(1, 'Erik Joao', 'Marrasquin Moreira', '1999-09-10', '1234567895', 'manta- los esteros', 'Soltero', 'Femenino'),
+(2, 'Ronaldo Bryan', 'Choez Delgado', '1999-05-11', '8549632581', 'manta-Aurora', 'Soltero', 'Femenino'),
+(3, 'Omar Leonardo', 'Limon Yagual', '1999-12-17', '2450297169', 'cdla \"Los Girasoles\"', 'Soltero', 'Masculino'),
+(4, 'Maria Esther', 'Yagual Vera', '1972-09-11', '914962048', 'cdla \"Los Girasoles\"', 'Union', 'Femenino'),
+(5, 'Arsenio Epifanio', 'Limon Tomala', '1960-11-13', '2458963254', 'cdla \"Los Girasoles\"', 'Union', 'Masculino'),
+(6, 'Maria Natividad', 'Tomala Borbor', '1945-12-25', '8963215640', 'Barrio 28 de Mayo', 'Viuda', 'Femenino'),
+(7, 'Cecilia Elizabeth', 'Vera Tomala', '1972-11-11', '3697512486', 'Barrio Jaime Roldos', 'Viuda', 'Femenino'),
+(8, 'Xavier Dario', 'Limon Tomala', '1986-12-26', '2156954103', 'Barrio 28 de Mayo', 'Soltero', 'Masculino'),
+(9, 'Benjamin Isai', 'Zamora Fernandez', '1999-11-28', '9635876215', 'muey', 'Soltero', 'Masculino'),
+(10, 'Karen Alejandra', 'Parrales Velazquez', '2000-08-12', '2369451205', 'Barrio Jaime Roldos', 'Soltera', 'Femenino');
+
+-- --------------------------------------------------------
+
+
+
+INSERT INTO `producto` (`ID_PRODUCTO`, `ID_SUCURSAL`, `ID_TIPO_PRODUCTO`, `NOMBRE_PRODUCTO`, `FECHA_ELAB_PRODUCTO`, `FECHA_CAD_PRODUCTO`, `PRECIIO_PRODUCTO`, `STOCK_PRODUCTO`, `DESCRIPCION_PRODUCTO`) VALUES
+(1, 10, 1, 'Atún Real', '2020-12-01', '2021-04-01', 2.5, '60', 'Atún Real'),
+(2, 5, 1, 'Azucar Super', '2020-12-02', '2021-03-04', 1.75, '60', 'Azucar Super'),
+(3, 8, 1, 'Arroz Super', '2020-12-07', '2021-03-09', 0.9, '60', 'Arroz Super'),
+(4, 6, 3, 'CocaCola 1L', '2020-12-04', '2022-01-05', 1.25, '50', 'CocaCola 1L'),
+(5, 4, 3, 'Pepsi 1L', '2020-12-03', '2022-02-03', 1.15, '50', 'Pepsi 1L'),
+(6, 7, 3, 'IncaCola', '2020-12-03', '2022-11-02', 1, '50', 'IncaCola'),
+(7, 8, 4, 'Ron 100 Fuegos', '2020-12-01', '2022-02-03', 10, '25', 'Ron 100 Fuegos 1L'),
+(8, 1, 4, 'Vodka SIberian', '2020-12-01', '2022-03-17', 11, '30', 'Vodka SIberian 1L'),
+(9, 3, 2, 'Papel Higiénico Familia', '2020-12-01', '2022-08-19', 1.65, '75', 'Papel Higiénico Familia'),
+(10, 6, 2, 'Jabon Jolly', '2020-12-10', '2023-07-13', 3.25, '80', 'Jabon Jolly'),
+(11, 9, 3, 'Naranjada Super', '2020-12-02', '2023-08-02', 0.8, '50', 'Naranjada Super 1L'),
+(12, 1, 1, 'Café Super', '2020-12-01', '2021-11-03', 0.35, '60', 'Café Super 500g'),
+(13, 10, 3, 'Agua Super', '2020-12-02', '2021-07-08', 0.35, '50', 'Agua Super 500ml'),
+(14, 6, 2, 'Detergente Super', '2020-12-16', '2021-07-14', 0.95, '75', 'Detergente Super 500g'),
+(15, 8, 2, 'Desinfectante Super', '2020-12-09', '2023-06-07', 1.35, '75', 'Desinfectante Super 1L'),
+(16, 4, 1, 'Chocolate Super', '2020-12-09', '2021-07-14', 0.65, '75', 'Chocolate Super'),
+(17, 9, 1, 'Cereal Nestle', '2020-12-03', '2021-12-09', 1.25, '80', 'Cereal Nestle'),
+(18, 7, 1, 'Galletas Maria', '2020-12-10', '2022-10-14', 0.5, '80', 'Galletas Maria'),
+(19, 2, 1, 'Nuggets Plummrose', '2020-12-08', '2021-03-16', 1, '100', 'Nuggets Plummrose'),
+(20, 10, 1, 'Aceite Palma de Oro', '2020-12-01', '2021-08-05', 1.3, '60', 'Aceite Palma de Oro 1L');
+
+-- --------------------------------------------------------
+
+
+INSERT INTO `producto_proveedor` (`ID_PRO_PROV`, `ID_PRODUCTO`, `ID_PROVEEDOR`) VALUES
+(1, 1, 5),
+(2, 2, 3),
+(3, 3, 3),
+(4, 4, 1),
+(5, 5, 6),
+(6, 6, 1),
+(7, 7, 3),
+(8, 8, 3),
+(9, 9, 3),
+(10, 10, 3),
+(11, 11, 3),
+(12, 12, 3),
+(13, 13, 3),
+(14, 14, 3),
+(15, 15, 3),
+(16, 16, 3),
+(17, 17, 2),
+(18, 18, 2),
+(19, 19, 7),
+(20, 20, 4);
+
+-- --------------------------------------------------------
+
+
+
+INSERT INTO `proveedor` (`ID_PROVEEDOR`, `NOMBRE_PROVEEDOR`) VALUES
+(1, 'CocaCola'),
+(2, 'Nestle'),
+(3, 'Super'),
+(4, 'Danec'),
+(5, 'Nirsa'),
+(6, 'Pepsi'),
+(7, 'Plummrose');
+
+-- --------------------------------------------------------
+
+
+
+INSERT INTO `provincia` (`ID_PROVINCIA`, `NOMBRE_PROVINCIA`) VALUES
+(1, 'Esmeraldas'),
+(2, 'Manabi'),
+(3, 'Los Rios'),
+(4, 'Santa Elena'),
+(5, 'Guayas'),
+(6, 'Santa Domingo de los Tsáchilas'),
+(7, 'El Oro'),
+(8, 'Azuay'),
+(9, 'Bolivar'),
+(10, 'Cañar'),
+(11, 'Carchi'),
+(12, 'Cotopaxi'),
+(13, 'Chimborazo'),
+(14, 'Imbabura'),
+(15, 'Loja'),
+(16, 'Pichincha'),
+(17, 'Tungurahua'),
+(18, 'Morona Santiago'),
+(19, 'Napo'),
+(20, 'Orellana'),
+(21, 'Pastaza'),
+(22, 'Sucumbios'),
+(23, 'Zamora Chinchipe'),
+(24, 'Galápagos');
+
+-- --------------------------------------------------------
+
+
+
+INSERT INTO `sucursal` (`ID_SUCURSAL`, `ID_CIUDAD`, `NOMBRE_SUCURSAL`) VALUES
+(1, 9, 'SuperLagoAgrio'),
+(2, 7, 'SuperQuito'),
+(3, 6, 'SuperMachala'),
+(4, 5, 'SuperCuenca'),
+(5, 4, 'SuperPortoviejo'),
+(6, 2, 'SuperManta'),
+(7, 3, 'SuperGuayakill'),
+(8, 8, 'SuperAmbato'),
+(9, 1, 'SuperLibertad'),
+(10, 10, 'SuperZamora');
+
+-- --------------------------------------------------------
+
+
+
+INSERT INTO `tipo_empleado` (`ID_TIPO_EMPLEADO`, `NOMBRE_TIPO_EMPLEADO`, `DESCRIPCION_TIPO_EMPLEADO`, `SALARIO_TIPO_EMPLEADO`) VALUES
+(1, 'Administrativo', 'aquellos cuyas labores se relacionan con tareas propias de oficina tales como, redacción y/o confección de cartas comerciales', '500'),
+(2, 'Perchero', 'Ubicar los abarrotes en las perchas del local según los parámetros establecido', '350'),
+(3, 'Cajero', 'es una persona responsable de sumar la cantidad debida por una compra, cargar al consumidor esa cantidad y después, recoger e', '360');
+
+-- --------------------------------------------------------
+
+INSERT INTO `tipo_producto` (`ID_TIPO_PRODUCTO`, `NOMBRE_TIPO_PRODUCTO`) VALUES
+(1, 'Comidas'),
+(2, 'Aseo'),
+(3, 'Bebidas'),
+(4, 'Licores');
+
+
+----------CONSULTA 1--------------------
+SELECT empleado.ID_EMPLEADO, 
+persona.NOMBRES_PERSONA as 'Nombres',
+persona.APELLIDOS_PERSONA as 'Apellidos', 
+persona.FECHA_NACIMIENTO_PERSONA as 'Fecha de Nacimiento',
+persona.ESTADOCIVIL_PERSONA as 'Estado Civil', 
+persona.SEXO_PERSONA as 'Sexo', 
+tipo_empleado.NOMBRE_TIPO_EMPLEADO as 'Tipo Empleado', 
+tipo_empleado.SALARIO_TIPO_EMPLEADO as 'Salario' 
+FROM `empleado` INNER JOIN persona on empleado.ID_PERSONA=persona.ID_PERSONA 
+INNER JOIN tipo_empleado on empleado.ID_TIPO_EMPLEADO=tipo_empleado.ID_TIPO_EMPLEADO 
+WHERE persona.SEXO_PERSONA='Masculino'
+
+----------CONSULTA 2--------------------
+
+SELECT producto.ID_PRODUCTO ,
+producto.NOMBRE_PRODUCTO as 'Nombre',
+producto.STOCK_PRODUCTO as 'Stock',
+proveedor.NOMBRE_PROVEEDOR as 'Proveedor'
+FROM producto_proveedor
+INNER JOIN proveedor on producto_proveedor.ID_PROVEEDOR=proveedor.ID_PROVEEDOR
+INNER JOIN producto on producto_proveedor.ID_PRODUCTO=producto.ID_PRODUCTO
+WHERE proveedor.NOMBRE_PROVEEDOR='CocaCola'
+
+----------CONSULTA 3--------------------
+
+SELECT sucursal.NOMBRE_SUCURSAL as 'Sucursal',
+provincia.NOMBRE_PROVINCIA as 'Provincia',
+ciudad.NOMBRE_CIUDAD as 'Ciudad'
+FROM sucursal
+INNER JOIN ciudad on sucursal.ID_CIUDAD=ciudad.ID_CIUDAD
+INNER JOIN provincia on ciudad.ID_PROVINCIA=provincia.ID_PROVINCIA
+WHERE provincia.NOMBRE_PROVINCIA='Manabi'
+
+----------CONSULTA 4--------------------
+
+SELECT producto.NOMBRE_PRODUCTO as 'Producto',
+producto.PRECIIO_PRODUCTO as 'Precio',
+producto.STOCK_PRODUCTO as 'Stock',
+producto.FECHA_CAD_PRODUCTO as 'Fecha de Caducidad',
+tipo_producto.NOMBRE_TIPO_PRODUCTO as 'Tipo de Producto'
+FROM producto
+INNER JOIN tipo_producto on producto.ID_TIPO_PRODUCTO=tipo_producto.ID_TIPO_PRODUCTO
+WHERE tipo_producto.NOMBRE_TIPO_PRODUCTO='Bebidas'
+*/
+
+
+
